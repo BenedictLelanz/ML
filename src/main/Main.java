@@ -11,14 +11,6 @@ public class Main {
 
         DataSetCreator dataSetCreator = new DataSetCreator(500, 19);
 
-        for (int i = 0; i < 100; i++) {
-            TestResult result = testAIModel(new NeuralNetwork(27), dataSetCreator, i);
-            System.out.println("Epoches: " + i + ", success: " + result.averageSuccess());
-        }
-
-        if (true) return;
-
-        Random random = new Random();
         List<Double> successRates = new ArrayList<>();
 
         for (int i = 0; i < 20; i++) {

@@ -1,6 +1,8 @@
 package main;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -57,6 +59,9 @@ public class DataSetCreator {
 				}
 			}
 		}
+
+		Collections.shuffle(trainingsSet);
+		Collections.shuffle(testSet);
 	}
 
 	private int nextRandom() {

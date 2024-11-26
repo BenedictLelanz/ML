@@ -1,6 +1,8 @@
 package learning;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import main.Concept;
@@ -42,16 +44,16 @@ public class NeuralNetwork implements Learner {
 
     @Override
     public Concept classify(FeatureVector example) {
-        Concept concept = null;
-        int successCount = 0;
-        for (int i = 0; i < this.perceptrons.length; i++) {
-            if (this.perceptrons[i].calculateOutput(example) == 1) {
-                successCount++;
-                concept = this.perceptrons[i].getConcept();
-                return concept;
+        List<Perceptron> perceptrons = new ArrayList<Perceptron>();
+        for (Perceptron perceptron : this.perceptrons)
+            perceptrons.add(perceptron);
+        Collections.shuffle(perceptrons);
+        for (Perceptron perceptron : perceptrons) {
+            if (perceptron.calculateOutput(example) == 1) {
+                return perceptron.getConcept();
             }
         }
-        return successCount == 1 ? concept : null; // Optional oder Default-Wert einfügen
+        return null;
     }
 
 }
