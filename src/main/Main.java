@@ -9,11 +9,20 @@ public class Main {
         // If feature vectors are not created yet
         // new CreateFeatureVectors();
 
+        DataSetCreator dataSetCreator = new DataSetCreator(500, 19);
+
+        for (int i = 0; i < 100; i++) {
+            TestResult result = testAIModel(new NeuralNetwork(27), dataSetCreator, i);
+            System.out.println("Epoches: " + i + ", success: " + result.averageSuccess());
+        }
+
+        if (true) return;
+
         Random random = new Random();
         List<Double> successRates = new ArrayList<>();
 
         for (int i = 0; i < 20; i++) {
-            TestResult result = testAIModel(new NeuralNetwork(27), random.nextInt(), 500, 500, false);
+            TestResult result = testAIModel(new NeuralNetwork(27), dataSetCreator, 500);
             System.out.println(result);
             successRates.add(result.averageSuccess());
         }
@@ -29,15 +38,10 @@ public class Main {
         System.out.println("95% Konfidenzintervall: [" + confidenceInterval[0] + ", " + confidenceInterval[1] + "]");
     }
 
-    public static TestResult testAIModel(Learner learner, int seed, int epoches, int traingsSetSizePerConcept,
-            boolean useTrainingsDataToTest) {
-
-        System.out.println("Test AIModel [Learner: " + learner.getClass().getSimpleName() + ", seed: " + seed
-                + ", epoches: " + epoches + "]");
-        DataSetCreator dataSetCreator = new DataSetCreator(traingsSetSizePerConcept, seed);
+    public static TestResult testAIModel(Learner learner, DataSetCreator dataSetCreator, int epoches) {
 
         List<FeatureVector> trainingsData = dataSetCreator.getTrainingsData();
-        List<FeatureVector> testData = useTrainingsDataToTest ? trainingsData : dataSetCreator.getTestData();
+        List<FeatureVector> testData = dataSetCreator.getTestData();
 
         long timestamp1 = System.currentTimeMillis();
         for (int i = 0; i < epoches; i++) {
@@ -70,7 +74,7 @@ public class Main {
                 timestamp1,
                 timestamp2,
                 epoches,
-                seed,
+                19,
                 trainingsData.size(),
                 testData.size(),
                 trainingsData.size() / Concept.values().length,

@@ -42,12 +42,16 @@ public class NeuralNetwork implements Learner {
 
     @Override
     public Concept classify(FeatureVector example) {
+        Concept concept = null;
+        int successCount = 0;
         for (int i = 0; i < this.perceptrons.length; i++) {
             if (this.perceptrons[i].calculateOutput(example) == 1) {
-                return this.perceptrons[i].getConcept();
+                successCount++;
+                concept = this.perceptrons[i].getConcept();
+                return concept;
             }
         }
-        return null; // Optional oder Default-Wert einfügen
+        return successCount == 1 ? concept : null; // Optional oder Default-Wert einfügen
     }
 
 }
